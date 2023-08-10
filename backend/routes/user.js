@@ -88,9 +88,11 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
     const product = await COURSE.findOne({
       _id: new mongoose.Types.ObjectId(`${productId}`),
     });
+    console.log(req.body.rating);
     product.reviews.push({
       body: req.body.body,
       description: req.body.description,
+      rating: Number(req.body.rating),
       by: new mongoose.Types.ObjectId(`${req.user._id}`),
     });
     await product.save();

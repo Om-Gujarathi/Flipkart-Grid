@@ -46,7 +46,7 @@ function CourseCard({ course }) {
     <Card sx={{ minWidth: 300, margin: 5 }}>
       <CardActionArea
         onClick={() => {
-          navigate(`/courses/${course._id}`);
+          navigate(`/viewproduct/${course._id}`);
         }}
       >
         <CardMedia

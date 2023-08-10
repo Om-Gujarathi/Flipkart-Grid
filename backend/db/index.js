@@ -5,6 +5,7 @@ const commentSchema = new mongoose.Schema(
     body: String,
     description: String,
     by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    rating: Number,
   },
   {
     timestamps: true,
@@ -39,4 +40,4 @@ const COURSE = mongoose.model("Courses", productSchema);
 const USER = mongoose.model("User", userSchema);
 const ADMIN = mongoose.model("Admin", adminSchema);
 
-module.exports =  { COURSE, USER, ADMIN };
+module.exports = { COURSE, USER, ADMIN };
