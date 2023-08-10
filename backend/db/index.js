@@ -1,11 +1,24 @@
 const mongoose = require("mongoose");
 
-const courseSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema(
+  {
+    body: String,
+    description: String,
+    by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const productSchema = new mongoose.Schema({
   title: String,
   description: String,
+  rating: Number,
   price: Number,
   imageLink: String,
   published: Boolean,
+  reviews: [commentSchema],
 });
 
 //Defining Schemas
@@ -22,7 +35,7 @@ const adminSchema = new mongoose.Schema({
 
 //Defining models from schemas
 //These are basically collections
-const COURSE = mongoose.model("Courses", courseSchema);
+const COURSE = mongoose.model("Courses", productSchema);
 const USER = mongoose.model("User", userSchema);
 const ADMIN = mongoose.model("Admin", adminSchema);
 

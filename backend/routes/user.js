@@ -2,6 +2,7 @@ const { USER, COURSE } = require("../db/index");
 const express = require("express");
 const { userAuthentication, secret } = require("../middlewares/user");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -77,6 +78,27 @@ router.get("/purchasedCourses", userAuthentication, async (req, res) => {
     res.json({ purchasedCourses: user.purchasedCourses });
   } else {
     res.status(403).json({ message: "User not found" });
+  }
+});
+
+router.post("/addComment/:productId", userAuthentication, async (req, res) => {
+  const productId = req.params.productId;
+
+  if (req.user.purchasedCourses.includes(productId)) {
+    const product = await COURSE.findOne({
+      _id: new mongoose.Types.ObjectId(`${productId}`),
+    });
+    product.reviews.push({
+      body: req.body.body,
+      description: req.body.description,
+      by: new mongoose.Types.ObjectId(`${req.user._id}`),
+    });
+    await product.save();
+    res.json({ message: "Comment added sucessfully" });
+  } else {
+    res
+      .status(401)
+      .json({ message: "Cannot Comment without purchasing the course" });
   }
 });
 
