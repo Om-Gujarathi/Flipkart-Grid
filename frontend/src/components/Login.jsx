@@ -37,25 +37,26 @@ function Login() {
   return (
     <center>
       <div>
-        <div
-          style={{
-            marginTop: 100,
-          }}
-        >
-          <Typography variant="h4" gutterBottom>
-            Welcome back!
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-            Please Log in to continue
-          </Typography>
-          <br />
-        </div>
         <Card
           variant="outlined"
           style={{
             width: 400,
+            marginTop: 100,
           }}
         >
+          <div
+            style={{
+              marginTop: 10,
+            }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Welcome back!
+            </Typography>
+            <Typography variant="h5" gutterBottom>
+              Please Log in to continue
+            </Typography>
+            <br />
+          </div>
           <div
             style={{
               display: "flex",

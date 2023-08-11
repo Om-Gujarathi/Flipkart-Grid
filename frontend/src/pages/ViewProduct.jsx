@@ -17,15 +17,9 @@ function ViewProduct() {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`${API_END_POINT}/admin/courses/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        setProduct(res.data.course);
-      });
+    axios.get(`${API_END_POINT}/users/products/${productId}`).then((res) => {
+      setProduct(res.data.product);
+    });
   }, []);
   if (!product) {
     return (
@@ -191,75 +185,5 @@ function Reviews() {
     </div>
   );
 }
-
-// function Comment(props) {
-//   const comment = props.comment;
-//   return (
-//     <div
-//       style={{
-//         marginLeft: "10px",
-//       }}
-//     >
-//       <div
-//         style={{
-//           display: "flex",
-//         }}
-//       >
-//         <div
-//           style={{
-//             width: "30px",
-//             height: "20px",
-//             backgroundColor: "#FF6161",
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "center",
-//             marginTop: "5px",
-//             borderRadius: "5px",
-//             paddingBottom: "1px",
-//             paddingTop: "1px",
-//           }}
-//         >
-//           <Typography
-//             sx={{
-//               color: "white",
-//               fontWeight: "600",
-//             }}
-//           >
-//             {comment.rating}
-//           </Typography>
-//           <StarIcon sx={{ fontSize: 12, color: "white" }}></StarIcon>
-//         </div>
-//         <Typography
-//           sx={{
-//             fontWeight: "600",
-//             marginLeft: "8px",
-//             fontSize: "14",
-//           }}
-//         >
-//           {comment.title}
-//         </Typography>
-//       </div>
-
-//       <Typography>{comment.description}</Typography>
-//       <div
-//         style={{
-//           display: "flex",
-//         }}
-//       >
-//         <Typography variant="subtitle2">{comment.username}</Typography>
-//         <Typography
-//           variant="subtitle2"
-//           sx={{
-//             marginLeft: "5px",
-//           }}
-//         >
-//           {comment.date}
-//         </Typography>
-//       </div>
-
-//       <Divider></Divider>
-//     </div>
-//   );
-// }
 
 export default ViewProduct;

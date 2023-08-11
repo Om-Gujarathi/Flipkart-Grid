@@ -12,11 +12,10 @@ function Courses() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_END_POINT}/admin/courses`, {
+    fetch(`${API_END_POINT}/users/courses`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => res.json())

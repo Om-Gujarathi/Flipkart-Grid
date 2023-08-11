@@ -10,6 +10,7 @@ import API_END_POINT from "../../utility";
 import TextField from "@mui/material/TextField";
 import Settings from "../common/settings";
 import ConnectMetamask from "../common/ConnectMetamask";
+import LoginModal from "./LoginModal";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ function Appbar() {
             variant="filled"
             size="small"
           />
-          <Button
+          {/* <Button
             variant="contained"
             style={{
               width: 100,
@@ -89,7 +90,8 @@ function Appbar() {
             }}
           >
             Login
-          </Button>
+          </Button> */}
+          <LoginModal></LoginModal>
         </div>
       </div>
     );

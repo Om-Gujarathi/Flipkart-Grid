@@ -48,6 +48,20 @@ router.get("/courses", async (req, res) => {
   res.json({ courses: await COURSE.find({ published: true }) });
 });
 
+router.get("/products/:productId", async (req, res) => {
+  // logic to get product from Id
+  const productId = req.params.productId;
+  const product = await COURSE.findOne({
+    _id: new mongoose.Types.ObjectId(`${productId}`),
+    published: true,
+  });
+  if (product) {
+    res.json({ product });
+  } else {
+    res.status(404).json({ message: "Product not found" });
+  }
+});
+
 router.post("/courses/:courseId", userAuthentication, async (req, res) => {
   // logic to purchase a course
   const courseId = req.params.courseId;
