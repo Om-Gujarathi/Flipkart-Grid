@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/courses", userAuthentication, async (req, res) => {
+router.get("/courses", async (req, res) => {
   // logic to list all published courses
   res.json({ courses: await COURSE.find({ published: true }) });
 });

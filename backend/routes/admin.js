@@ -93,7 +93,7 @@ router.get("/courses/:courseId", adminAuthentication, async (req, res) => {
 });
 
 router.delete("/courses/:courseId", adminAuthentication, async (req, res) => {
-  // logic to get course from Id
+  // logic to delete course from Id
   const courseId = req.params.courseId;
   const course = await COURSE.findOne({
     _id: new mongoose.Types.ObjectId(`${courseId}`),
