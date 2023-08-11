@@ -7,6 +7,7 @@ import AddCourse from "./components/AddCourse";
 import { RecoilRoot } from "recoil";
 import EditCourse from "./components/EditCourse";
 import ViewProduct from "./pages/ViewProduct";
+import Points from "./pages/Points";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
             <Route path="/addcourse" element={<AddCourse />}></Route>
             <Route path="/viewproduct/:productId" element={<ViewProduct/>}></Route>
             <Route path="/courses/:courseId" element={<EditCourse />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/points" element={<Points />}></Route>
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

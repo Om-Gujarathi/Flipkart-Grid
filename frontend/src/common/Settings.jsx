@@ -8,11 +8,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useSetRecoilState } from "recoil";
 import userState from "../recoil/UserState";
+import { useNavigate } from "react-router-dom";
 
 export default function Settings() {
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Profile", "Account", "Flip Coins", "Logout"];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const setUsername = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -22,6 +24,8 @@ export default function Settings() {
     if (event.target.innerText == "Logout") {
       localStorage.setItem("token", null);
       setUsername("");
+    } else if (event.target.innerText == "Flip Coins") {
+      navigate("/points");
     }
     setAnchorElUser(null);
   };
