@@ -53,8 +53,12 @@ function Login() {
       style={{
         width: "750px",
         height: "700px",
-        marginLeft: "25%",
-        marginTop: "10%",
+        margin: "auto",
+        position: "absolute",
+        top: 200,
+        left: 0,
+        right: 0,
+        bottom: 0,
       }}
     >
       <Card style={{ display: "flex" }}>
