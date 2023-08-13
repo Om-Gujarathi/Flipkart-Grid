@@ -62,24 +62,24 @@ router.get("/products/:productId", async (req, res) => {
   }
 });
 
-router.post("/courses/:courseId", userAuthentication, async (req, res) => {
-  // logic to purchase a course
-  const courseId = req.params.courseId;
-  const course = await COURSE.findOne({
-    _id: new mongoose.Types.ObjectId(`${courseId}`),
+router.post("/products/:productId", userAuthentication, async (req, res) => {
+  // logic to purchase a product
+  const productId = req.params.productId;
+  const product = await COURSE.findOne({
+    _id: new mongoose.Types.ObjectId(`${productId}`),
   });
 
-  if (course) {
-    if (req.user.purchasedCourses.includes(courseId)) {
-      res.json({ message: "Course already purchased" });
-    } else if (course.published) {
+  if (product) {
+    if (req.user.purchasedCourses.includes(productId)) {
+      res.json({ message: "Product already purchased" });
+    } else if (product.published) {
       //Make payment logic
-      req.user.purchasedCourses.push(courseId);
+      req.user.purchasedCourses.push(productId);
       await req.user.save();
-      res.json({ message: "Course purchased successfully" });
+      res.json({ message: "Product purchased successfully" });
     }
   } else {
-    res.status(404).json({ message: "Course not found" });
+    res.status(404).json({ message: "Product not found" });
   }
 });
 

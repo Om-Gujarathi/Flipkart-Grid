@@ -11,7 +11,7 @@ import userState from "../recoil/UserState";
 import { useNavigate } from "react-router-dom";
 
 export default function Settings() {
-  const settings = ["Profile", "Account", "Flip Coins", "Logout"];
+  const settings = ["My Account", "Flip Coins", "Logout"];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const setUsername = useSetRecoilState(userState);
   const navigate = useNavigate();

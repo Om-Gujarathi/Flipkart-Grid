@@ -50,6 +50,7 @@ function ViewProduct() {
 }
 
 function CourseCard(props) {
+  const { productId } = useParams();
   const product = props.product;
   return (
     <Card
@@ -125,6 +126,20 @@ function CourseCard(props) {
               style={{
                 backgroundColor: "#FB641B",
                 width: "200px",
+              }}
+              onClick={async () => {
+                const res = await axios.post(
+                  `${API_END_POINT}/users/products/${productId}`,
+                  {},
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  }
+                );
+                if (res.status == 200) {
+                  
+                }
               }}
             >
               <div
