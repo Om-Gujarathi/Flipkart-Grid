@@ -3,6 +3,7 @@ import axios from "axios";
 import API_END_POINT from "../../utility";
 import { Card, Avatar, Typography, Button } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
+import { useNavigate } from "react-router-dom";
 
 export default function Orders() {
   const [products, setProducts] = useState([]);
@@ -50,6 +51,7 @@ export default function Orders() {
 }
 
 function Product({ product }) {
+  const navigate = useNavigate();
   return (
     <Card
       sx={{
@@ -100,6 +102,9 @@ function Product({ product }) {
             style={{
               color: "#2874F0",
               marginLeft: "5px",
+            }}
+            onClick={() => {
+              navigate(`/review/${product._id}`);
             }}
           >
             Rate & Review Product
