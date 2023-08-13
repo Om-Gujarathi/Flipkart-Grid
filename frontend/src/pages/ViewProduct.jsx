@@ -6,11 +6,15 @@ import axios from "axios";
 import API_END_POINT from "../../utility";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
-import Divider from "@mui/material/Divider";
 import Rating from "@mui/material/Rating";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Box from "@mui/material/Box";
 import CommentList from "../components/CommentList";
+import MuiAlert from "@mui/material/Alert";
+import React from "react";
+import Snackbar from "@mui/material/Snackbar";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function ViewProduct() {
   const { productId } = useParams();
@@ -51,6 +55,19 @@ function ViewProduct() {
 
 function CourseCard(props) {
   const { productId } = useParams();
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const product = props.product;
   return (
     <Card
@@ -137,8 +154,9 @@ function CourseCard(props) {
                     },
                   }
                 );
+                console.log(res.data);
                 if (res.status == 200) {
-                  
+                  return handleClick();
                 }
               }}
             >
@@ -182,6 +200,11 @@ function CourseCard(props) {
           <Reviews></Reviews>
         </div>
       </div>
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Product Purchased Sucessfully!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 }

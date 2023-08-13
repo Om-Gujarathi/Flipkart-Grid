@@ -71,7 +71,7 @@ router.post("/products/:productId", userAuthentication, async (req, res) => {
 
   if (product) {
     if (req.user.purchasedCourses.includes(productId)) {
-      res.json({ message: "Product already purchased" });
+      res.status(401).json({ message: "Product already purchased" });
     } else if (product.published) {
       //Make payment logic
       req.user.purchasedCourses.push(productId);
