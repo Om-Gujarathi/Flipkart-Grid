@@ -21,9 +21,15 @@ function ViewProduct() {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_END_POINT}/users/products/${productId}`).then((res) => {
-      setProduct(res.data.product);
-    });
+    axios
+      .get(`${API_END_POINT}/users/products/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setProduct(res.data.product);
+      });
   }, []);
   if (!product) {
     return (
@@ -154,10 +160,7 @@ function CourseCard(props) {
                     },
                   }
                 );
-                console.log(res.data);
-                if (res.status == 200) {
-                  return handleClick();
-                }
+                handleClick();
               }}
             >
               <div
@@ -197,19 +200,20 @@ function CourseCard(props) {
               <b>₹ {product.price} </b>
             </Typography>
           </div>
-          <Reviews></Reviews>
+          <Reviews isPurchased={product.isPurchased}></Reviews>
         </div>
       </div>
       <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Product Purchased Sucessfully!
+          "Product Purchased Successfully!"
         </Alert>
       </Snackbar>
     </Card>
   );
 }
 
-function Reviews() {
+function Reviews({ isPurchased }) {
+  console.log(isPurchased);
   return (
     <div
       style={{
@@ -219,6 +223,16 @@ function Reviews() {
         marginBottom: "50px",
       }}
     >
+      {isPurchased ? (
+        <TextField
+          sx={{
+            marginLeft: "70px",
+          }}
+        ></TextField>
+      ) : (
+        <div> </div>
+      )}
+
       <CommentList></CommentList>
     </div>
   );

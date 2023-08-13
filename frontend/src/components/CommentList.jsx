@@ -12,9 +12,15 @@ function CommentList() {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_END_POINT}/users/products/${productId}`).then((res) => {
-      setProduct(res.data.product);
-    });
+    axios
+      .get(`${API_END_POINT}/users/products/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setProduct(res.data.product);
+      });
   }, []);
   if (!product) {
     return (

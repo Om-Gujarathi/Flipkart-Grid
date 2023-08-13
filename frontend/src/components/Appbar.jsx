@@ -1,16 +1,14 @@
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CircularProgress from "@mui/material/CircularProgress";
 import userState from "../recoil/UserState";
 import { useRecoilState } from "recoil";
 import API_END_POINT from "../../utility";
 import TextField from "@mui/material/TextField";
-import Settings from "../common/settings";
 import ConnectMetamask from "../common/ConnectMetamask";
 import LoginModal from "./LoginModal";
+import Settings from "../common/Settings";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -55,8 +53,14 @@ function Appbar() {
         >
           <Typography
             variant="h6"
+            component="a"
+            href="/"
             style={{
               color: "white",
+            }}
+            onClick={() => {
+              console.log("hi");
+              navigate("/");
             }}
           >
             ShopKart
@@ -74,23 +78,6 @@ function Appbar() {
             variant="filled"
             size="small"
           />
-          {/* <Button
-            variant="contained"
-            style={{
-              width: 100,
-              backgroundColor: "white",
-              color: "#2874f0",
-              height: "40px",
-              fontWeight: "700",
-            }}
-            disableElevation
-            size="small"
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            Login
-          </Button> */}
           <LoginModal></LoginModal>
         </div>
       </div>
@@ -117,6 +104,9 @@ function Appbar() {
           variant="h6"
           style={{
             color: "white",
+          }}
+          onClick={() => {
+            navigate("/");
           }}
         >
           ShopKart
