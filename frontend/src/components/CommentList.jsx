@@ -19,7 +19,7 @@ function CommentList() {
         },
       })
       .then((res) => {
-        setProduct(res.data.product);
+        setProduct(res.data);
       });
   }, []);
   if (!product) {

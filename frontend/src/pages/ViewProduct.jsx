@@ -28,7 +28,7 @@ function ViewProduct() {
         },
       })
       .then((res) => {
-        setProduct(res.data.product);
+        setProduct(res.data);
       });
   }, []);
   if (!product) {
