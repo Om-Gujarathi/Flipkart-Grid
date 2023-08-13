@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useSetRecoilState } from "recoil";
 import userState from "../recoil/UserState";
 import { useNavigate } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function Settings() {
   const settings = ["My Account", "Flip Coins", "Orders", "Logout"];
@@ -36,7 +37,13 @@ export default function Settings() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Om Gujarathi" />
+          <AccountCircleIcon
+            fontSize="large"
+            sx={{
+              color: "white",
+              marginTop: "3px",
+            }}
+          />
         </IconButton>
       </Tooltip>
       <Menu

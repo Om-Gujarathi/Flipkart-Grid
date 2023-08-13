@@ -41,6 +41,7 @@ function Appbar() {
           height: "56px",
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <div
@@ -90,6 +91,7 @@ function Appbar() {
         height: "56px",
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <div
@@ -104,6 +106,7 @@ function Appbar() {
           variant="h6"
           style={{
             color: "white",
+            marginTop: "4px",
           }}
           onClick={() => {
             navigate("/");

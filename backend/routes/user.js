@@ -48,22 +48,22 @@ router.get("/courses", async (req, res) => {
   res.json({ courses: await COURSE.find({ published: true }) });
 });
 
-router.get("/products/:productId",userAuthentication, async (req, res) => {
+router.get("/products/:productId", userAuthentication, async (req, res) => {
   // logic to get product from Id
   const productId = req.params.productId;
   const product = await COURSE.findOne({
     _id: new mongoose.Types.ObjectId(`${productId}`),
     published: true,
   });
- if (product) {
-   if (req.user.purchasedCourses.includes(productId)) {
-     return res.json({ ...product.toObject(), isPurchased: true });
-   } else {
-     return res.json({ ...product.toObject(), isPurchased: false });
-   }
- } else {
-   res.status(404).json({ message: "Product not found" });
- }
+  if (product) {
+    if (req.user.purchasedCourses.includes(productId)) {
+      return res.json({ ...product.toObject(), isPurchased: true });
+    } else {
+      return res.json({ ...product.toObject(), isPurchased: false });
+    }
+  } else {
+    res.status(404).json({ message: "Product not found" });
+  }
 });
 
 router.post("/products/:productId", userAuthentication, async (req, res) => {
@@ -111,7 +111,7 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
       body: req.body.body,
       description: req.body.description,
       rating: Number(req.body.rating),
-      by: new mongoose.Types.ObjectId(`${req.user._id}`),
+      by: req.user.username,
     });
     await product.save();
     res.json({ message: "Comment added sucessfully" });

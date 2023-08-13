@@ -5,7 +5,7 @@ import MuiAlert from "@mui/material/Alert";
 import { ethers } from "ethers";
 
 function ConnectMetamask() {
-  const [connButtonText, setConnButtonText] = React.useState("Connect Wallet!");
+  const [connButtonText, setConnButtonText] = React.useState("Connect Wallet");
   const [open, setOpen] = React.useState(false);
   const [userBalance, setUserBalance] = React.useState(null);
   const [defaultAccount, setDefaultAccount] = React.useState(null);
@@ -69,11 +69,10 @@ function ConnectMetamask() {
       <Button
         variant="contained"
         style={{
-          width: 100,
-          backgroundColor: "white",
-          color: "red",
+          backgroundColor: "#FB641B",
+          borderRadius: "0px",
           height: "40px",
-          fontWeight: "700",
+          fontWeight: "500",
         }}
         disableElevation
         size="small"

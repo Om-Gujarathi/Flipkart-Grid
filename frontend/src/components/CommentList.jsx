@@ -5,7 +5,13 @@ import axios from "axios";
 import API_END_POINT from "../../utility";
 import StarIcon from "@mui/icons-material/Star";
 import Chip from "@mui/material/Chip";
-import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 function CommentList() {
   const { productId } = useParams();
@@ -58,8 +64,30 @@ function CommentList() {
               }
             </ListItemIcon>
             <ListItemText
-              primary={comment.body}
-              secondary={comment.description}
+              primary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline", fontWeight: 500 }}
+                    variant="subtitle1"
+                  >
+                    {comment.body}
+                  </Typography>
+                </React.Fragment>
+              }
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {comment.description}
+                  </Typography>
+                  <br />
+                   - <strong>{comment.by}</strong>
+                </React.Fragment>
+              }
             />
           </ListItem>
         );

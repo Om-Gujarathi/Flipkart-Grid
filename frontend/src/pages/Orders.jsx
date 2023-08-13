@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import API_END_POINT from "../../utility";
-import { Card, Avatar, Typography } from "@mui/material";
+import { Card, Avatar, Typography, Button } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 
 export default function Orders() {
   const [products, setProducts] = useState([]);
@@ -23,9 +24,29 @@ export default function Orders() {
       });
   }, []);
 
-  return products.map((product) => {
-    return <Product product={product} key={product._id}></Product>;
-  });
+  return (
+    <div>
+      {products.map((product) => {
+        return <Product product={product} key={product._id}></Product>;
+      })}
+      <center>
+        <Button
+          variant="outlined"
+          style={{
+            backgroundColor: "white",
+            color: "#2874f0",
+            height: "40px",
+            fontWeight: "700",
+          }}
+          disableElevation
+          size="small"
+          disabled
+        >
+          No more results to display
+        </Button>
+      </center>
+    </div>
+  );
 }
 
 function Product({ product }) {
@@ -66,6 +87,24 @@ function Product({ product }) {
         <Typography sx={{}} variant="subtitle2">
           ₹{product.price}
         </Typography>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <StarIcon sx={{ fontSize: 15, color: "#2874F0" }} />
+          <Typography
+            variant="subtitle2"
+            style={{
+              color: "#2874F0",
+              marginLeft: "5px",
+            }}
+          >
+            Rate & Review Product
+          </Typography>
+        </div>
       </div>
     </Card>
   );

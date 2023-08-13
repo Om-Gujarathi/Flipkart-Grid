@@ -223,16 +223,6 @@ function Reviews({ isPurchased }) {
         marginBottom: "50px",
       }}
     >
-      {isPurchased ? (
-        <TextField
-          sx={{
-            marginLeft: "70px",
-          }}
-        ></TextField>
-      ) : (
-        <div> </div>
-      )}
-
       <CommentList></CommentList>
     </div>
   );

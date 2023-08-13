@@ -4,7 +4,7 @@ const commentSchema = new mongoose.Schema(
   {
     body: String,
     description: String,
-    by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    by: String,
     rating: Number,
   },
   {
