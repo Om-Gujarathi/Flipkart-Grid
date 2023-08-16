@@ -1,8 +1,17 @@
-import { Card, Typography, Button } from "@mui/material";
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import {
+  Card,
+  Typography,
+  Button,
+  Divider,
+  TextField,
+  IconButton,
+} from "@mui/material";
+import * as React from "react";
+import Rating from "@mui/material/Rating";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import axios from "axios";
+import API_END_POINT from "../../utility";
+import { useParams } from "react-router-dom";
 
 function Review() {
   return (
@@ -13,27 +22,30 @@ function Review() {
 }
 
 function Name() {
-
-  const [value, setValue] = React.useState(0);
+  const { productId } = useParams();
+  const [rating, setRating] = React.useState(0);
+  const [description, setDescription] = React.useState(null);
+  const [title, setTitle] = React.useState(null);
+  const [name, setName] = React.useState(null);
 
   return (
     <>
       <Card
         variant="outlined"
         sx={{
-          margin: "20px 5px",
-          boxShadow: "0.2px 1px 10px grey",
-          height: "fit-content"
+          height: "60px",
+          padding: "5px 10px",
+          margin: "8px",
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Typography
-          variant="h5"
           sx={{
+            fontSize: "22px",
             fontWeight: 500,
-            padding: "20px",
           }}
         >
-
           Ratings & Reviews
         </Typography>
       </Card>
@@ -41,218 +53,139 @@ function Name() {
         <Card
           variant="outlined"
           sx={{
-            width: "25%",
-            margin: "10px",
-            boxShadow: "0.2px 1px 10px grey",
-            height: "fit-content"
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: 500,
-              padding: "20px",
-              borderBottom: "0.5px solid grey",
-              margin: "5px",
-
-            }}
-          >
-
-            What makes a good review
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              borderBottom: "0.2px solid grey"
-            }}
-            style={{
-              width: "100%",
-              padding: "15px",
-            }}
-          >
-            Have you used this product?
-            <p style={{ fontSize: "15px", width: "95%" }}>Your Review should be about your experience with the product</p>
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              borderBottom: "0.2px solid grey"
-            }}
-            style={{
-              width: "100%",
-              padding: "15px",
-            }}
-          >
-            Why review a product?
-            <p style={{ fontSize: "15px", width: "95%" }}>Your valuable feedback will help fellow shoppers decie!</p>
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              borderBottom: "0.2px solid grey"
-            }}
-            style={{
-              width: "100%",
-              padding: "15px",
-            }}
-          >
-            How to review a product?
-            <p style={{ fontSize: "15px", width: "95%" }}>Your review should include facts. An honest opinion is always appreciated. If you have an issue with the product or service please contact us from the<a href="#" style={{
-              textDecoration: "none"
-            }}> help centre</a></p>
-          </Typography>
-        </Card>
-        <Card
-          variant="outlined"
-          sx={{
             width: "71%",
             margin: "10px",
-            boxShadow: "0.2px 1px 10px grey",
-            height: "fit-content"
+            height: "fit-content",
           }}
         >
-          <Card
+          <div
             style={{
-              margin: "15px",
-              boxShadow: "none",
-              borderBottom: "1px solid grey",
-              padding : "20px 125px"
-              
+              margin: "20px",
             }}
           >
-            <Box
-              sx={{
-                '& > legend': { mt: 1 },
-                margin: "0 15px",
-                display : "flex",
-                alignItems : "center",
-                justifyContent : "space-between"
-
-              }}
+            <Typography
+              sx={{ fontSize: "18px", fontWeight: 500, marginBottom: "5px" }}
             >
-              <Typography variant="h5" component="legend">Rate this Product</Typography>
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-
-                }}
-              />
-            </Box>
-          </Card>
-          <Card style={{
-            margin: "15px",
-            boxShadow: "none",
-            borderRadius : "5px"
-          }}>
-            <Typography variant="h6" component="legend">Review this Product</Typography>
+              Rate
+            </Typography>
+            <Rating
+              name="simple-controlled"
+              value={rating}
+              onChange={(event, newRating) => {
+                setRating(newRating);
+              }}
+            />
+            <Divider></Divider>
+          </div>
+          <div
+            style={{
+              margin: "20px",
+              boxShadow: "none",
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "18px", fontWeight: 500, marginBottom: "5px" }}
+            >
+              Review
+            </Typography>
             <div
               style={{
-                overflow: "hidden", margin: "15px 5px"
-              }}>
-              <div id="desc" style={{
-                border: "0.2px solid grey", padding: "10px 10px",
-                borderRadius : "5px", margin :"3px 0"
-              }}>
-                <Typography variant="h5" component="legend" style={{
-                  fontSize: "20px"
-                }}>Description</Typography>
-                <textarea id="comments" placeholder="Description..." style={{
-                  border: "none",
-                  width: "98%",
-                  height: "150px",
-                  outline: "none",
-                  fontSize: "15px",
-                  margin: "10px 0"
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <TextField
+                id="filled-multiline-static"
+                label="Description"
+                InputProps={{ sx: { borderRadius: 0 } }}
+                multiline
+                rows={4}
+                variant="outlined"
+                onChange={(e) => {
+                  setDescription(e.target.value);
                 }}
-                />
-              </div>
-              <div id="title" style={{
-                border: "0.2px solid grey", padding: "10px 10px",
-                borderRadius : "5px", margin :"3px 0"
-              }}>
-                <Typography variant="h5" component="legend" style={{
-                  fontSize: "20px"
-                }}>Title (Optional)</Typography>
-                <input type="text" placeholder="Review Title" style={{
-                  border: "none",
-                  width: "98%",
-                  height: "25px",
-                  outline: "none",
-                  fontSize: "15px",
-                  margin: "10px 0"
-                }} />
-              </div>
-              <div id="cus_name" style={{
-                border: "0.2px solid grey", padding: "10px 10px",
-                borderRadius : "5px", margin :"3px 0"
-              }}>
-                <Typography variant="h5" component="legend" style={{
-                  fontSize: "20px"
-                }}>Name</Typography>
-                <input type="text" placeholder="ShopKart Customer" style={{
-                  border: "none",
-                  width: "98%",
-                  height: "25px",
-                  outline: "none",
-                  fontSize: "15px",
-                  margin: "10px 0"
-                }} />
-              </div>
-              <div id="image" style={{
-                border: "0.2px solid grey", padding: "10px 10px",
-                borderRadius : "5px", margin :"3px 0"
-              }}>
-                <Button
-                size="large"
-                variant="contained"
-                disableElevation
-                style={{
-                  backgroundColor: "#FB641B",
-                  width: "20px",
+                sx={{
+                  background: "white",
+                  width: "100%",
+                  margin: "5px",
                 }}
-                >
-                  <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
+              />
+              <TextField
+                id="filled-multiline-static"
+                label="Title"
+                InputProps={{ sx: { borderRadius: 0 } }}
+                variant="outlined"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                sx={{
+                  background: "white",
+                  width: "100%",
+                  margin: "5px",
+                }}
+              />
+              <TextField
+                id="filled-multiline-static"
+                label="Name"
+                InputProps={{ sx: { borderRadius: 0 } }}
+                variant="outlined"
+                sx={{
+                  background: "white",
+                  width: "100%",
+                  margin: "5px",
+                }}
+              />
+              <br />
+              <br />
+              <IconButton>
+                <AddAPhotoIcon
+                  sx={{
+                    margin: "5px",
+                    color: "grey",
+                    backgroundColor: "#eeeeee",
+                    padding: "16px",
                   }}
-                >
-                  <AddAPhotoIcon/>
-                </div>
-                </Button>
-                <Button
-                size="large"
+                ></AddAPhotoIcon>
+              </IconButton>
+              <div></div>
+              <Button
                 variant="contained"
-                disableElevation
-                style={{
+                sx={{
                   backgroundColor: "#FB641B",
-                  width: "200px",
-                  float:"right",
-                  marginRight:"50px"
+                  borderRadius: "2px",
+                  alignSelf: "flex-end",
+                  margin: "0 22px 20px 0",
+                  padding: "10px 20px",
+                  width: "250px",
+                  height: "55px",
+                  fontSize: "16px",
                 }}
-                
+                onClick={async () => {
+                  console.log(description, title, rating);
+                  await axios.post(
+                    `${API_END_POINT}/users/addComment/${productId}`,
+                    {
+                      body: title,
+                      description: description,
+                      rating: rating,
+                    },
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                    }
+                  );
+                }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                    }}
-                  >
-                    Submit
-                  </Typography>
-                </div>
+                Continue
               </Button>
-              </div>
-             
             </div>
-          </Card>
+          </div>
         </Card>
       </div>
     </>
