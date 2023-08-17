@@ -22,7 +22,7 @@ router.post("/signup", async (req, res) => {
       purchasedCourses: [],
     });
 
-    newUser.save();
+    await newUser.save();
 
     res.status(200).send({ message: "User created successfully" });
   }
