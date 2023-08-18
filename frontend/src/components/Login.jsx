@@ -173,7 +173,7 @@ function LoginForm({ setNewUser }) {
               borderRadius: "0px",
             }}
             onClick={() => {
-              fetch(`${API_END_POINT}/admin/login`, {
+              fetch(`${API_END_POINT}/users/login`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
