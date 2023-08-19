@@ -1,7 +1,7 @@
 import { Card, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, TextField, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import axios from "axios";
 import API_END_POINT from "../../utility";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -218,7 +218,6 @@ function CourseCard(props) {
 }
 
 function Reviews({ isPurchased }) {
-  console.log(isPurchased);
   return (
     <div
       style={{

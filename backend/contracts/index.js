@@ -1,12 +1,25 @@
 const { ThirdwebSDK } = require("@thirdweb-dev/sdk");
-const { apiKey, contractAddress } = require("../config");
-
-const sdk = new ThirdwebSDK("mumbai", {
+const { privateKey, apiKey, contractAddress } = require("../config");
+const sdk = ThirdwebSDK.fromPrivateKey(privateKey, "mumbai", {
   secretKey: apiKey,
 });
 
-const tokenDetails = async function getTokenDetails() {
-  
+let contract;
+
+async function setup() {
+  contract = await sdk.getContract(contractAddress);
 }
 
-module.exports = tokenDetails;
+setup();
+
+async function getBalance(address) {
+  const balance = await contract.erc20.balanceOf(address);
+  return balance;
+}
+
+async function addBalance(address, amount) {
+  await contract.erc20.mintTo(address, amount);
+}
+
+module.exports.getBalance = getBalance;
+module.exports.addBalance = addBalance;
