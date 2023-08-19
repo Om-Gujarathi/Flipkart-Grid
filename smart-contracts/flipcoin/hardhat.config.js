@@ -12,13 +12,6 @@ module.exports = {
     },
   },
   networks: {
-    hardhat: {
-      chainId: 1337,
-    },
-    running: {
-      url: "http://localhost:8545",
-      chainId: 1337
-    },
     zksync_testnet: {
       url: "https://zksync2-testnet.zksync.dev",
       ethNetwork: "goerli",
@@ -47,5 +40,4 @@ module.exports = {
       },
     },
   },
-  defaultNetwork: "running",
 };

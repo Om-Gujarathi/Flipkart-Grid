@@ -11,6 +11,8 @@ import CommentList from "../components/CommentList";
 import MuiAlert from "@mui/material/Alert";
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
+import { useRecoilState } from "recoil";
+import walletState from "../recoil/WalletState";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -75,6 +77,7 @@ function CourseCard(props) {
     setOpen(false);
   };
   const product = props.product;
+  const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
   return (
     <Card
       style={{
@@ -153,7 +156,9 @@ function CourseCard(props) {
               onClick={async () => {
                 const res = await axios.post(
                   `${API_END_POINT}/users/products/${productId}`,
-                  {},
+                  {
+                    address: defaultAccount,
+                  },
                   {
                     headers: {
                       Authorization: `Bearer ${localStorage.getItem("token")}`,

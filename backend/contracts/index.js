@@ -5,10 +5,8 @@ const sdk = new ThirdwebSDK("mumbai", {
   secretKey: apiKey,
 });
 
-const contract = await sdk.getContract(contractAddress);
+const tokenDetails = async function getTokenDetails() {
+  
+}
 
-const token = await contract.erc20.get();
-
-console.log(token);
-
-module.exports = contract;
+module.exports = tokenDetails;

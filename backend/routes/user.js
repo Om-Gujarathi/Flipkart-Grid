@@ -1,10 +1,42 @@
+const ethers = require("ethers");
 const { USER, COURSE } = require("../db/index");
 const express = require("express");
 const { userAuthentication, secret } = require("../middlewares/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const { ThirdwebSDK } = require("@thirdweb-dev/sdk");
+const { apiKey, contractAddress } = require("../config");
 
 const router = express.Router();
+
+router.post("/getBalance", async (req, res) => {
+  const address = req.body.address;
+  console.log(address);
+  // const signer = new ethers.Wallet(
+  //   "4eebc69c0ac3b361dd56e2de70966d7db40dbc62b829fe03d75358e6d1cf35b2"
+  // );
+  const sdk = ThirdwebSDK.fromPrivateKey(
+    "4eebc69c0ac3b361dd56e2de70966d7db40dbc62b829fe03d75358e6d1cf35b2",
+    "mumbai",
+    {
+      // clientId: "YOUR_CLIENT_ID", // Use client id if using on the client side, get it from dashboard settings
+      secretKey: apiKey, // Use secret key if using on the server, get it from dashboard settings
+    }
+  );
+
+  const contract = await sdk.getContract(
+    "0xb378d634158B5Cd37A0A133cEafd380bEf89e958"
+  );
+  const balance = await contract.erc20.balanceOf(address);
+
+  // const sdk = new ThirdwebSDK("mumbai", {
+  //   secretKey: apiKey,
+  // });
+
+  await contract.erc20.mintTo(address, 12816387);
+
+  res.status(200).send({ balance });
+});
 
 router.post("/signup", async (req, res) => {
   // logic to sign up user
@@ -29,6 +61,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  // tokenDetails();
   // logic to log in user
   const username = req.headers.username;
   const password = req.headers.password;
@@ -69,6 +102,7 @@ router.get("/products/:productId", userAuthentication, async (req, res) => {
 router.post("/products/:productId", userAuthentication, async (req, res) => {
   // logic to purchase a product
   const productId = req.params.productId;
+  const address = req.body.address;
   const product = await COURSE.findOne({
     _id: new mongoose.Types.ObjectId(`${productId}`),
   });
@@ -80,6 +114,23 @@ router.post("/products/:productId", userAuthentication, async (req, res) => {
       //Make payment logic
       req.user.purchasedCourses.push(productId);
       await req.user.save();
+
+      const signer = new ethers.Wallet(
+        "4eebc69c0ac3b361dd56e2de70966d7db40dbc62b829fe03d75358e6d1cf35b2"
+      );
+
+      const sdk = ThirdwebSDK.fromSigner(signer, {
+        // clientId: "YOUR_CLIENT_ID", // Use client id if using on the client side, get it from dashboard settings
+        secretKey: apiKey, // Use secret key if using on the server, get it from dashboard settings
+      });
+      // const sdk = new ThirdwebSDK("mumbai", {
+      //   secretKey: apiKey,
+      // });
+      const contract = await sdk.getContract(
+        "0xb378d634158B5Cd37A0A133cEafd380bEf89e958"
+      );
+
+      await contract.erc20.mintTo(address, 12816387);
       res.json({ message: "Product purchased successfully" });
     }
   } else {
