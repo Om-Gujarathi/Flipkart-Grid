@@ -43,7 +43,6 @@ function ConnectMetamask() {
   };
 
   const accountChangedHandler = (newAccount) => {
-    console.log(newAccount);
     setDefaultAccount(newAccount);
     getUserBalance(newAccount);
   };

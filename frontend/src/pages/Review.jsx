@@ -163,7 +163,6 @@ function Name() {
                   fontSize: "16px",
                 }}
                 onClick={async () => {
-                  console.log(description, title, rating);
                   await axios.post(
                     `${API_END_POINT}/users/addComment/${productId}`,
                     {

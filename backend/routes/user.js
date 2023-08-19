@@ -8,10 +8,8 @@ const { getBalance, addBalance, createWallet } = require("../contracts/index");
 
 const router = express.Router();
 
-router.post("/getBalance", async (req, res) => {
-  const address = req.body.address;
-
-  const balance = await getBalance(address);
+router.post("/getBalance", userAuthentication, async (req, res) => {
+  const balance = await getBalance(req.user.walletAddress);
 
   res.status(200).send({ balance });
 });
@@ -55,9 +53,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/me", userAuthentication, (req, res) => {
-  // logic to log in admin
-  res.status(200).send({ username: req.user.username });
+router.get("/me", userAuthentication, async (req, res) => {
+  const balance = await getBalance(req.user.walletAddress);
+  res.status(200).send({ username: req.user.username, balance });
 });
 
 router.get("/courses", async (req, res) => {
@@ -86,7 +84,7 @@ router.get("/products/:productId", userAuthentication, async (req, res) => {
 router.post("/products/:productId", userAuthentication, async (req, res) => {
   // logic to purchase a product
   const productId = req.params.productId;
-  const address = req.body.address;
+  const address = req.user.walletAddress;
   const product = await COURSE.findOne({
     _id: new mongoose.Types.ObjectId(`${productId}`),
   });

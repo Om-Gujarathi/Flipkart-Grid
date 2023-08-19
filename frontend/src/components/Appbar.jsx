@@ -9,10 +9,13 @@ import TextField from "@mui/material/TextField";
 import ConnectMetamask from "../common/ConnectMetamask";
 import LoginModal from "./LoginModal";
 import Settings from "../common/Settings";
+import walletState from "../recoil/WalletState";
+import WalletButton from "../common/Wallet";
 
 function Appbar() {
   const navigate = useNavigate();
   const [username, setUsername] = useRecoilState(userState);
+  const [wallet, setWallet] = useRecoilState(walletState);
 
   useEffect(() => {
     axios
@@ -25,15 +28,17 @@ function Appbar() {
         if (res.data.username) {
           setUsername(res.data.username);
         }
+        if (res.data.balance) {
+          setWallet(res.data.balance);
+          console.log(res.data.balance);
+        }
       })
       .catch((err) => {
         setUsername("");
       });
   }, []);
-  if (username === null) {
-    return <div></div>;
-  }
-  if (username === "") {
+
+  if (username === "" || username === null) {
     return (
       <div
         style={{
@@ -60,7 +65,6 @@ function Appbar() {
               color: "white",
             }}
             onClick={() => {
-              console.log("hi");
               navigate("/");
             }}
           >
@@ -127,7 +131,7 @@ function Appbar() {
           variant="filled"
           size="small"
         />
-        <ConnectMetamask></ConnectMetamask>
+        <WalletButton></WalletButton>
         <Settings></Settings>
       </div>
     </div>

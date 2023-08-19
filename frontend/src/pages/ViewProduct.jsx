@@ -156,15 +156,30 @@ function CourseCard(props) {
               onClick={async () => {
                 const res = await axios.post(
                   `${API_END_POINT}/users/products/${productId}`,
-                  {
-                    address: defaultAccount,
-                  },
+                  {},
                   {
                     headers: {
                       Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                   }
                 );
+                fetch(`${API_END_POINT}/users/getBalance`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify({
+                    address: defaultAccount.displayValue,
+                  }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setDefaultAccount((oldWallet) => ({
+                      ...oldWallet,
+                      displayValue: data.balance.displayValue,
+                    }));
+                  });
                 handleClick();
               }}
             >
