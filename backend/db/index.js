@@ -26,6 +26,7 @@ const productSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
+  walletAddress: String,
   purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Courses" }],
 });
 

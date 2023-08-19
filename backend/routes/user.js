@@ -1,10 +1,23 @@
+const ethers = require("ethers");
 const { USER, COURSE } = require("../db/index");
 const express = require("express");
 const { userAuthentication, secret } = require("../middlewares/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const {
+  getBalance,
+  addBalance,
+  createWallet,
+  getTransactionHistory,
+} = require("../contracts/index");
 
 const router = express.Router();
+
+router.post("/getBalance", userAuthentication, async (req, res) => {
+  const balance = await getBalance(req.user.walletAddress);
+
+  res.status(200).send({ balance });
+});
 
 router.post("/signup", async (req, res) => {
   // logic to sign up user
@@ -16,9 +29,11 @@ router.post("/signup", async (req, res) => {
   if (user) {
     res.status(400).send({ message: "Account already created. Please log in" });
   } else {
+    const walletAddress = await createWallet();
     const newUser = new USER({
       username,
       password,
+      walletAddress,
       purchasedCourses: [],
     });
 
@@ -43,9 +58,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", userAuthentication, async (req, res) => {
+  const balance = await getBalance(req.user.walletAddress);
+  res.status(200).send({ username: req.user.username, balance });
+});
+
 router.get("/courses", async (req, res) => {
   // logic to list all published courses
   res.json({ courses: await COURSE.find({ published: true }) });
+});
+
+router.post("/transactionHistory", userAuthentication, async (req, res) => {
+  const history = await getTransactionHistory(req.user.walletAddress);
+  res.status(200).json({ history });
 });
 
 router.get("/products/:productId", userAuthentication, async (req, res) => {
@@ -69,6 +94,7 @@ router.get("/products/:productId", userAuthentication, async (req, res) => {
 router.post("/products/:productId", userAuthentication, async (req, res) => {
   // logic to purchase a product
   const productId = req.params.productId;
+  const address = req.user.walletAddress;
   const product = await COURSE.findOne({
     _id: new mongoose.Types.ObjectId(`${productId}`),
   });
@@ -80,6 +106,7 @@ router.post("/products/:productId", userAuthentication, async (req, res) => {
       //Make payment logic
       req.user.purchasedCourses.push(productId);
       await req.user.save();
+      addBalance(address, 10);
       res.json({ message: "Product purchased successfully" });
     }
   } else {
@@ -106,7 +133,6 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
     const product = await COURSE.findOne({
       _id: new mongoose.Types.ObjectId(`${productId}`),
     });
-    console.log(req.body.rating);
     product.reviews.push({
       body: req.body.body,
       description: req.body.description,

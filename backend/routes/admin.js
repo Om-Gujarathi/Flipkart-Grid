@@ -11,7 +11,6 @@ router.post("/signup", async (req, res) => {
   // logic to sign up admin
   const username = req.body.username;
   const password = req.body.password;
-  // console.log(username);
 
   if (username === "" || password === "") {
     res.status(400).send({ message: "Username/Password cannot be empty!" });

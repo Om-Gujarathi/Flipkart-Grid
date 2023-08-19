@@ -1,7 +1,7 @@
 import { Card, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Typography, TextField, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import axios from "axios";
 import API_END_POINT from "../../utility";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -11,6 +11,8 @@ import CommentList from "../components/CommentList";
 import MuiAlert from "@mui/material/Alert";
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
+import { useRecoilState } from "recoil";
+import walletState from "../recoil/WalletState";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -75,6 +77,7 @@ function CourseCard(props) {
     setOpen(false);
   };
   const product = props.product;
+  const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
   return (
     <Card
       style={{
@@ -160,6 +163,23 @@ function CourseCard(props) {
                     },
                   }
                 );
+                fetch(`${API_END_POINT}/users/getBalance`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify({
+                    address: defaultAccount.displayValue,
+                  }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setDefaultAccount((oldWallet) => ({
+                      ...oldWallet,
+                      displayValue: data.balance.displayValue,
+                    }));
+                  });
                 handleClick();
               }}
             >
@@ -213,7 +233,6 @@ function CourseCard(props) {
 }
 
 function Reviews({ isPurchased }) {
-  console.log(isPurchased);
   return (
     <div
       style={{
