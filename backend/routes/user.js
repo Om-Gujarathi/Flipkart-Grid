@@ -4,7 +4,7 @@ const express = require("express");
 const { userAuthentication, secret } = require("../middlewares/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { getBalance, addBalance } = require("../contracts/index");
+const { getBalance, addBalance, createWallet } = require("../contracts/index");
 
 const router = express.Router();
 
@@ -26,9 +26,11 @@ router.post("/signup", async (req, res) => {
   if (user) {
     res.status(400).send({ message: "Account already created. Please log in" });
   } else {
+    const walletAddress = await createWallet();
     const newUser = new USER({
       username,
       password,
+      walletAddress,
       purchasedCourses: [],
     });
 
@@ -39,7 +41,6 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  // tokenDetails();
   // logic to log in user
   const username = req.headers.username;
   const password = req.headers.password;
@@ -52,6 +53,11 @@ router.post("/login", async (req, res) => {
   } else {
     res.status(400).send({ message: "Login Failed" });
   }
+});
+
+router.get("/me", userAuthentication, (req, res) => {
+  // logic to log in admin
+  res.status(200).send({ username: req.user.username });
 });
 
 router.get("/courses", async (req, res) => {
@@ -92,7 +98,7 @@ router.post("/products/:productId", userAuthentication, async (req, res) => {
       //Make payment logic
       req.user.purchasedCourses.push(productId);
       await req.user.save();
-      addBalance(address, 10)
+      addBalance(address, 10);
       res.json({ message: "Product purchased successfully" });
     }
   } else {

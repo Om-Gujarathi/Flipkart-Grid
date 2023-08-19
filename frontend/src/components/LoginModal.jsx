@@ -28,14 +28,16 @@ export default function LoginModal() {
       >
         Login
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Login></Login>
-      </Modal>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <div>
+            <Login></Login>
+          </div>
+        </Modal>
     </div>
   );
 }

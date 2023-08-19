@@ -16,7 +16,7 @@ function Appbar() {
 
   useEffect(() => {
     axios
-      .get(`${API_END_POINT}/admin/me`, {
+      .get(`${API_END_POINT}/users/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
