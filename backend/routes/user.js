@@ -4,7 +4,12 @@ const express = require("express");
 const { userAuthentication, secret } = require("../middlewares/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { getBalance, addBalance, createWallet } = require("../contracts/index");
+const {
+  getBalance,
+  addBalance,
+  createWallet,
+  getTransactionHistory,
+} = require("../contracts/index");
 
 const router = express.Router();
 
@@ -61,6 +66,11 @@ router.get("/me", userAuthentication, async (req, res) => {
 router.get("/courses", async (req, res) => {
   // logic to list all published courses
   res.json({ courses: await COURSE.find({ published: true }) });
+});
+
+router.post("/transactionHistory", userAuthentication, async (req, res) => {
+  const history = await getTransactionHistory(req.user.walletAddress);
+  res.status(200).json({ history });
 });
 
 router.get("/products/:productId", userAuthentication, async (req, res) => {
@@ -123,7 +133,6 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
     const product = await COURSE.findOne({
       _id: new mongoose.Types.ObjectId(`${productId}`),
     });
-    console.log(req.body.rating);
     product.reviews.push({
       body: req.body.body,
       description: req.body.description,

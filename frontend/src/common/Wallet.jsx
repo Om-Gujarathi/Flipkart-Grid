@@ -17,10 +17,17 @@ function WalletButton() {
     >
       <TollIcon
         sx={{
-          color: "white",
+          color: "black",
+          marginRight: "5px",
         }}
       ></TollIcon>
-      <Typography>{wallet.displayValue}</Typography>
+      <Typography
+        sx={{
+          color: "white",
+        }}
+      >
+        {wallet.displayValue}
+      </Typography>
     </Card>
   );
 }

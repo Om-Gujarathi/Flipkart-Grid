@@ -59,7 +59,6 @@ function ConnectMetamask() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUserBalance(data.balance.displayValue);
         setConnButtonText(`Balance : ${data.balance.displayValue}`);
       });

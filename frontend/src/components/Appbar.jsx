@@ -30,13 +30,12 @@ function Appbar() {
         }
         if (res.data.balance) {
           setWallet(res.data.balance);
-          console.log(res.data.balance);
         }
       })
       .catch((err) => {
         setUsername("");
       });
-  }, []);
+  }, [username]);
 
   if (username === "" || username === null) {
     return (

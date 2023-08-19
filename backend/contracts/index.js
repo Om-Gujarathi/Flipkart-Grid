@@ -1,5 +1,6 @@
 const { ThirdwebSDK } = require("@thirdweb-dev/sdk");
 const { privateKey, apiKey, contractAddress } = require("../config");
+const multiplier = 1000000000000000000;
 const { Mumbai } = require("@thirdweb-dev/chains");
 const { LocalWallet } = require("@thirdweb-dev/wallets");
 
@@ -33,6 +34,19 @@ async function addBalance(address, amount) {
   await contract.erc20.mintTo(address, amount);
 }
 
+async function getTransactionHistory(address) {
+  const events = await contract.events.getEvents("Transfer");
+  let history = [];
+  events.forEach((trx) => {
+    if (trx.data.to == address) {
+      history.push({ value: parseInt(trx.data.value._hex) / multiplier });
+    }
+  });
+
+  return history;
+}
+
 module.exports.getBalance = getBalance;
 module.exports.addBalance = addBalance;
 module.exports.createWallet = createWallet;
+module.exports.getTransactionHistory = getTransactionHistory;
