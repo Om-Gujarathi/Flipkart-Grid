@@ -10,6 +10,8 @@ import ViewProduct from "./pages/ViewProduct";
 import Points from "./pages/Points";
 import Orders from "./pages/Orders";
 import Review from "./pages/Review";
+import SimpleBackdrop from "./pages/Backdrop";
+import EarnCoinsPage from "./pages/Features";
 
 function App() {
   return (
@@ -22,13 +24,18 @@ function App() {
     >
       <RecoilRoot>
         <BrowserRouter>
+          <SimpleBackdrop></SimpleBackdrop>
           <Appbar></Appbar>
           <Routes>
             <Route path="/" element={<Courses />}></Route>
+            <Route path="/features" element={<EarnCoinsPage />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/addcourse" element={<AddCourse />}></Route>
-            <Route path="/viewproduct/:productId" element={<ViewProduct/>}></Route>
+            <Route
+              path="/viewproduct/:productId"
+              element={<ViewProduct />}
+            ></Route>
             <Route path="/courses/:courseId" element={<EditCourse />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/points" element={<Points />}></Route>

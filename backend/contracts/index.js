@@ -31,7 +31,11 @@ async function getBalance(address) {
 }
 
 async function addBalance(address, amount) {
-  await contract.erc20.mintTo(address, amount);
+  try {
+    await contract.erc20.mintTo(address, amount);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function getTransactionHistory(address) {
@@ -46,7 +50,12 @@ async function getTransactionHistory(address) {
   return history;
 }
 
+async function burnBalance(address, amount) {
+  await contract.erc20.burn(10);
+}
+
 module.exports.getBalance = getBalance;
 module.exports.addBalance = addBalance;
 module.exports.createWallet = createWallet;
 module.exports.getTransactionHistory = getTransactionHistory;
+module.exports.burnBalance = burnBalance;

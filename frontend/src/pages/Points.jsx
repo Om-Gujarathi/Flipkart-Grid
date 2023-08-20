@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import TollIcon from "@mui/icons-material/Toll";
 import axios from "axios";
 import API_END_POINT from "../../utility";
+import { useSetRecoilState } from "recoil";
+import backdropState from "../recoil/BackDropState";
 
 function Points() {
   const [history, setHistory] = useState(null);
+  const setBackDrop = useSetRecoilState(backdropState);
   useEffect(() => {
     axios
       .post(
@@ -26,9 +29,11 @@ function Points() {
       });
   }, []);
   if (history == null) {
+    setBackDrop(true);
     return <div></div>;
   }
   let num = 0;
+  setBackDrop(false);
   return (
     <div>
       <div

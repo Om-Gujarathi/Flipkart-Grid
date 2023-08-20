@@ -11,6 +11,7 @@ import LoginModal from "./LoginModal";
 import Settings from "../common/Settings";
 import walletState from "../recoil/WalletState";
 import WalletButton from "../common/Wallet";
+import { CircularProgress } from "@mui/material";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function Appbar() {
           setUsername(res.data.username);
         }
         if (res.data.balance) {
-          setWallet(res.data.balance);
+          setWallet(res.data.balance.displayValue);
         }
       })
       .catch((err) => {
@@ -37,7 +38,58 @@ function Appbar() {
       });
   }, [username]);
 
-  if (username === "" || username === null) {
+  if (username === null) {
+    return (
+      <div
+        style={{
+          backgroundColor: "#2874f0",
+          height: "56px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            backgroundColor: "#2874f0",
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h6"
+            component="a"
+            href="/"
+            style={{
+              color: "white",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            ShopKart
+          </Typography>
+
+          <TextField
+            style={{
+              backgroundColor: "white",
+              width: "500px",
+              height: "40px",
+            }}
+            hiddenLabel
+            id="filled-hidden-label-small"
+            label="Search for Products"
+            variant="filled"
+            size="small"
+          />
+          <CircularProgress sx={{ color: "white" }} />
+        </div>
+      </div>
+    );
+  }
+
+  if (username === "") {
     return (
       <div
         style={{

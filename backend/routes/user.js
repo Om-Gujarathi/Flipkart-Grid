@@ -9,6 +9,7 @@ const {
   addBalance,
   createWallet,
   getTransactionHistory,
+  burnBalance,
 } = require("../contracts/index");
 
 const router = express.Router();
@@ -106,7 +107,35 @@ router.post("/products/:productId", userAuthentication, async (req, res) => {
       //Make payment logic
       req.user.purchasedCourses.push(productId);
       await req.user.save();
-      addBalance(address, 10);
+      await addBalance(address, 10);
+      res.json({ message: "Product purchased successfully" });
+    }
+  } else {
+    res.status(404).json({ message: "Product not found" });
+  }
+});
+
+router.post("/useBalance/:productId", userAuthentication, async (req, res) => {
+  // logic to purchase a product
+  const productId = req.params.productId;
+  const address = req.user.walletAddress;
+  const product = await COURSE.findOne({
+    _id: new mongoose.Types.ObjectId(`${productId}`),
+  });
+
+  if (product) {
+    if (req.user.purchasedCourses.includes(productId)) {
+      res.status(201).json({ message: "Product already purchased" });
+      return;
+    }
+    const balance = await getBalance(req.user.walletAddress);
+    if (balance < parseInt(product.price / 100)) {
+      res.status(201).json({ message: "Not enough FlipCoins!" });
+    } else if (product.published) {
+      //Make payment logic
+      req.user.purchasedCourses.push(productId);
+      await req.user.save();
+      await burnBalance();
       res.json({ message: "Product purchased successfully" });
     }
   } else {
@@ -128,6 +157,7 @@ router.get("/purchasedCourses", userAuthentication, async (req, res) => {
 
 router.post("/addComment/:productId", userAuthentication, async (req, res) => {
   const productId = req.params.productId;
+  const address = req.user.walletAddress;
 
   if (req.user.purchasedCourses.includes(productId)) {
     const product = await COURSE.findOne({
@@ -140,6 +170,7 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
       by: req.user.username,
     });
     await product.save();
+    await addBalance(address, 10);
     res.json({ message: "Comment added sucessfully" });
   } else {
     res

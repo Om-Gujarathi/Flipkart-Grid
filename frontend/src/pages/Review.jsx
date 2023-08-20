@@ -11,7 +11,10 @@ import Rating from "@mui/material/Rating";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import axios from "axios";
 import API_END_POINT from "../../utility";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import walletState from "../recoil/WalletState";
+import backdropState from "../recoil/BackDropState";
 
 function Review() {
   return (
@@ -27,6 +30,9 @@ function Name() {
   const [description, setDescription] = React.useState(null);
   const [title, setTitle] = React.useState(null);
   const [name, setName] = React.useState(null);
+  const navigate = useNavigate();
+  const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
+  const setOpen = useSetRecoilState(backdropState);
 
   return (
     <>
@@ -163,6 +169,7 @@ function Name() {
                   fontSize: "16px",
                 }}
                 onClick={async () => {
+                  setOpen(true);
                   await axios.post(
                     `${API_END_POINT}/users/addComment/${productId}`,
                     {
@@ -179,6 +186,22 @@ function Name() {
                       },
                     }
                   );
+                  fetch(`${API_END_POINT}/users/getBalance`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                      address: defaultAccount.displayValue,
+                    }),
+                  })
+                    .then((res) => res.json())
+                    .then((data) => {
+                      setDefaultAccount(data.balance.displayValue);
+                    });
+                  navigate("/");
+                  setOpen(false);
                 }}
               >
                 Continue
