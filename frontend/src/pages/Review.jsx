@@ -11,7 +11,9 @@ import Rating from "@mui/material/Rating";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import axios from "axios";
 import API_END_POINT from "../../utility";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import walletState from "../recoil/WalletState";
 
 function Review() {
   return (
@@ -27,6 +29,8 @@ function Name() {
   const [description, setDescription] = React.useState(null);
   const [title, setTitle] = React.useState(null);
   const [name, setName] = React.useState(null);
+  const navigate = useNavigate();
+  const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
 
   return (
     <>
@@ -179,6 +183,21 @@ function Name() {
                       },
                     }
                   );
+                  fetch(`${API_END_POINT}/users/getBalance`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    body: JSON.stringify({
+                      address: defaultAccount.displayValue,
+                    }),
+                  })
+                    .then((res) => res.json())
+                    .then((data) => {
+                      setDefaultAccount(data.balance.displayValue);
+                    });
+                  navigate("/");
                 }}
               >
                 Continue

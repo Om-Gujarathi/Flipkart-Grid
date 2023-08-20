@@ -157,6 +157,7 @@ router.get("/purchasedCourses", userAuthentication, async (req, res) => {
 
 router.post("/addComment/:productId", userAuthentication, async (req, res) => {
   const productId = req.params.productId;
+  const address = req.user.walletAddress;
 
   if (req.user.purchasedCourses.includes(productId)) {
     const product = await COURSE.findOne({
@@ -169,6 +170,7 @@ router.post("/addComment/:productId", userAuthentication, async (req, res) => {
       by: req.user.username,
     });
     await product.save();
+    await addBalance(address, 10);
     res.json({ message: "Comment added sucessfully" });
   } else {
     res
