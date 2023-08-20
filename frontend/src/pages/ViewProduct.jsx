@@ -11,8 +11,9 @@ import CommentList from "../components/CommentList";
 import MuiAlert from "@mui/material/Alert";
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import walletState from "../recoil/WalletState";
+import backdropState from "../recoil/BackDropState";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -78,6 +79,7 @@ function CourseCard(props) {
   };
   const product = props.product;
   const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
+  const setBackDrop = useSetRecoilState(backdropState);
   return (
     <Card
       style={{
@@ -124,6 +126,7 @@ function CourseCard(props) {
                 width: "200px",
               }}
               onClick={async () => {
+                setBackDrop(true);
                 const res = await axios.post(
                   `${API_END_POINT}/users/useBalance/${productId}`,
                   {},
@@ -147,6 +150,7 @@ function CourseCard(props) {
                   .then((data) => {
                     setDefaultAccount(data.balance.displayValue);
                   });
+                setBackDrop(false);
                 handleClick();
               }}
             >
@@ -180,7 +184,8 @@ function CourseCard(props) {
                 width: "200px",
               }}
               onClick={async () => {
-                const res = await axios.post(
+                setBackDrop(true);
+                await axios.post(
                   `${API_END_POINT}/users/products/${productId}`,
                   {},
                   {
@@ -203,6 +208,7 @@ function CourseCard(props) {
                   .then((data) => {
                     setDefaultAccount(data.balance.displayValue);
                   });
+                setBackDrop(false);
                 handleClick();
               }}
             >

@@ -12,8 +12,9 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import axios from "axios";
 import API_END_POINT from "../../utility";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import walletState from "../recoil/WalletState";
+import backdropState from "../recoil/BackDropState";
 
 function Review() {
   return (
@@ -31,6 +32,7 @@ function Name() {
   const [name, setName] = React.useState(null);
   const navigate = useNavigate();
   const [defaultAccount, setDefaultAccount] = useRecoilState(walletState);
+  const setOpen = useSetRecoilState(backdropState);
 
   return (
     <>
@@ -167,6 +169,7 @@ function Name() {
                   fontSize: "16px",
                 }}
                 onClick={async () => {
+                  setOpen(true);
                   await axios.post(
                     `${API_END_POINT}/users/addComment/${productId}`,
                     {
@@ -198,6 +201,7 @@ function Name() {
                       setDefaultAccount(data.balance.displayValue);
                     });
                   navigate("/");
+                  setOpen(false);
                 }}
               >
                 Continue
