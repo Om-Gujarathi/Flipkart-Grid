@@ -29,7 +29,7 @@ function Appbar() {
           setUsername(res.data.username);
         }
         if (res.data.balance) {
-          setWallet(res.data.balance);
+          setWallet(res.data.balance.displayValue);
         }
       })
       .catch((err) => {

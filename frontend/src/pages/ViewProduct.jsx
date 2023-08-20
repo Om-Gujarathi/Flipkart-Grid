@@ -123,6 +123,32 @@ function CourseCard(props) {
                 backgroundColor: "#FF9F00",
                 width: "200px",
               }}
+              onClick={async () => {
+                const res = await axios.post(
+                  `${API_END_POINT}/users/useBalance/${productId}`,
+                  {},
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  }
+                );
+                fetch(`${API_END_POINT}/users/getBalance`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify({
+                    address: defaultAccount.displayValue,
+                  }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setDefaultAccount(data.balance.displayValue);
+                  });
+                handleClick();
+              }}
             >
               <div
                 style={{
@@ -140,7 +166,7 @@ function CourseCard(props) {
                     fontWeight: 700,
                   }}
                 >
-                  Add to Cart
+                  Buy using {product.price / 10} FlipCoins
                 </Typography>
               </div>
             </Button>
@@ -175,10 +201,7 @@ function CourseCard(props) {
                 })
                   .then((res) => res.json())
                   .then((data) => {
-                    setDefaultAccount((oldWallet) => ({
-                      ...oldWallet,
-                      displayValue: data.balance.displayValue,
-                    }));
+                    setDefaultAccount(data.balance.displayValue);
                   });
                 handleClick();
               }}
