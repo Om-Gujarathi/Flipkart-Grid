@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import Typography from "@mui/material/Typography";
-import { Card } from "@mui/material";
+import { Card, SpeedDial } from "@mui/material";
 import { CardActionArea } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 import API_END_POINT from "../../utility";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${API_END_POINT}/users/courses`, {
@@ -24,16 +26,26 @@ function Courses() {
       });
   }, []);
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-      }}
-    >
-      {courses.map((course) => {
-        return <CourseCard course={course} key={course._id}></CourseCard>;
-      })}
+    <div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
+        {courses.map((course) => {
+          return <CourseCard course={course} key={course._id}></CourseCard>;
+        })}
+      </div>
+      <SpeedDial
+        onClick={() => {
+          navigate("/features");
+        }}
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        icon={<HelpOutlineIcon />}
+      ></SpeedDial>
     </div>
   );
 }

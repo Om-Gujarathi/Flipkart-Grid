@@ -11,6 +11,7 @@ import Points from "./pages/Points";
 import Orders from "./pages/Orders";
 import Review from "./pages/Review";
 import SimpleBackdrop from "./pages/Backdrop";
+import EarnCoinsPage from "./pages/Features";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Appbar></Appbar>
           <Routes>
             <Route path="/" element={<Courses />}></Route>
+            <Route path="/features" element={<EarnCoinsPage />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/addcourse" element={<AddCourse />}></Route>
